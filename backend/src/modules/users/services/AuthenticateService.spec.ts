@@ -5,20 +5,20 @@ import BCriptHashProvider from '@modules/users/providers/HashProvider/implementa
 import CreateUserService from './CreateUserService';
 import AppError from '@shared/errors/AppError';
 
+let userRepository: FakeUserRepository;
+let hashProvider: BCriptHashProvider;
+let createUserService: CreateUserService;
+let authenticateService: AuthenticateService;
+
 describe('AuthenticateUser', () => {
+  beforeEach(() => {
+    userRepository = new FakeUserRepository();
+    hashProvider = new BCriptHashProvider();
+    createUserService = new CreateUserService(userRepository, hashProvider);
+    authenticateService = new AuthenticateService(userRepository, hashProvider);
+  });
+
   it('Should be able to authenticate', async () => {
-    const userRepository = new FakeUserRepository();
-    const hashProvider = new BCriptHashProvider();
-    const createUserService = new CreateUserService(
-      userRepository,
-      hashProvider,
-    );
-
-    const authenticateService = new AuthenticateService(
-      userRepository,
-      hashProvider,
-    );
-
     const user = await createUserService.execute({
       name: 'Jonh Doe',
       email: 'jonhdoe@example.com',
@@ -35,14 +35,6 @@ describe('AuthenticateUser', () => {
   });
 
   it('Should not be able authenticate with a non existing user', async () => {
-    const userRepository = new FakeUserRepository();
-    const hashProvider = new BCriptHashProvider();
-
-    const authenticateService = new AuthenticateService(
-      userRepository,
-      hashProvider,
-    );
-
     await expect(
       authenticateService.execute({
         email: 'jonhdoe@example.com',
@@ -52,18 +44,6 @@ describe('AuthenticateUser', () => {
   });
 
   it('Should not be able to authenticate whit wrong password', async () => {
-    const userRepository = new FakeUserRepository();
-    const hashProvider = new BCriptHashProvider();
-    const createUserService = new CreateUserService(
-      userRepository,
-      hashProvider,
-    );
-
-    const authenticateService = new AuthenticateService(
-      userRepository,
-      hashProvider,
-    );
-
     await createUserService.execute({
       name: 'Jonh Doe',
       email: 'jonhdoe@example.com',

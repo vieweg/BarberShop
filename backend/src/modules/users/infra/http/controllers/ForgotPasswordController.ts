@@ -12,10 +12,7 @@ export default class UsersController {
     const { email } = req.body;
     const sendForgotPasswordMail = container.resolve(SendForgotPasswordMail);
 
-    await sendForgotPasswordMail.execute({
-      email,
-      body: 'Email de recuperação de senha',
-    });
+    await sendForgotPasswordMail.execute({ email });
 
     return res.status(201).send();
   }

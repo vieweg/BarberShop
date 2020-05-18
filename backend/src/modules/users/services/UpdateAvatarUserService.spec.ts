@@ -4,15 +4,17 @@ import UpdateAvatarUserService from './UpdateAvatarUserService';
 import StorageProvider from '@shared/containers/providers/StorageProvider/fakes/FakeStorageProvider';
 import AppError from '@shared/errors/AppError';
 
-describe('Update User Avatar', () => {
-  it('Should be able to update a avatar user', async () => {
-    const userRepository = new UserRepository();
-    const storageProvider = new StorageProvider();
-    const updateAvatar = new UpdateAvatarUserService(
-      userRepository,
-      storageProvider,
-    );
+let userRepository: UserRepository;
+let storageProvider: StorageProvider;
+let updateAvatar: UpdateAvatarUserService;
 
+describe('Update User Avatar', () => {
+  beforeEach(() => {
+    userRepository = new UserRepository();
+    storageProvider = new StorageProvider();
+    updateAvatar = new UpdateAvatarUserService(userRepository, storageProvider);
+  });
+  it('Should be able to update a avatar user', async () => {
     const user = await userRepository.create({
       name: 'Jonh Doe',
       email: 'jonhdoe@example.com',
@@ -27,13 +29,6 @@ describe('Update User Avatar', () => {
   });
 
   it('Should not be able change avatar when not authenticated', async () => {
-    const userRepository = new UserRepository();
-    const storageProvider = new StorageProvider();
-    const updateAvatar = new UpdateAvatarUserService(
-      userRepository,
-      storageProvider,
-    );
-
     const avatarFile = 'caminho/para/o/avatar.jpg';
 
     await expect(
@@ -45,13 +40,6 @@ describe('Update User Avatar', () => {
   });
 
   it('Should be able remove old avatar when a new has submited', async () => {
-    const userRepository = new UserRepository();
-    const storageProvider = new StorageProvider();
-    const updateAvatar = new UpdateAvatarUserService(
-      userRepository,
-      storageProvider,
-    );
-
     const deleteFile = jest.spyOn(storageProvider, 'deleteFile');
 
     const user = await userRepository.create({
