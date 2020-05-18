@@ -15,7 +15,14 @@ class FakeUsersRepository implements IUsersRepository {
   }: ICreateUserDTO): Promise<User> {
     const user = new User();
 
-    Object.assign(user, { id: uuid(), name, email, password });
+    Object.assign(user, {
+      id: uuid(),
+      name,
+      email,
+      password,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
 
     this.users.push(user);
 
@@ -37,6 +44,13 @@ class FakeUsersRepository implements IUsersRepository {
   public async findByEmail(email: string): Promise<User | undefined> {
     const findUser = this.users.find(user => user.email === email);
     return findUser;
+  }
+
+  public async remove(user: User): Promise<void> {
+    const userIndex = this.users.findIndex(u => u.id === user.id);
+    if (userIndex >= 0) {
+      this.users.splice(userIndex, 1);
+    }
   }
 }
 

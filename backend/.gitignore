@@ -3,3 +3,4 @@
 /.vscode/
 tmp/*
 !tmp/.gitkeep
+/coverage/

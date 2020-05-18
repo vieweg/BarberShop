@@ -1,7 +1,6 @@
 import FakeUserRepository from '../repositories/fakes/FakeUsersRepository';
 import CreateUserService from './CreateUserService';
 import BCriptHashProvider from '@modules/users/providers/HashProvider/implementations/BCriptHashProvider';
-import { compare } from 'bcryptjs';
 import AppError from '@shared/errors/AppError';
 
 describe('CreateUser', () => {
@@ -59,6 +58,6 @@ describe('CreateUser', () => {
       password: '123456',
     });
 
-    expect(await compare('123456', user.password)).toBe(true);
+    expect(await hashProvider.compareHash('123456', user.password)).toBe(true);
   });
 });

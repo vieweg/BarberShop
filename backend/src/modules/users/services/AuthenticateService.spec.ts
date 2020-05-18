@@ -4,7 +4,6 @@ import BCriptHashProvider from '@modules/users/providers/HashProvider/implementa
 
 import CreateUserService from './CreateUserService';
 import AppError from '@shared/errors/AppError';
-import User from '../infra/typeorm/entities/User';
 
 describe('AuthenticateUser', () => {
   it('Should be able to authenticate', async () => {

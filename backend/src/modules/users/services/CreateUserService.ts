@@ -1,4 +1,3 @@
-import { hash } from 'bcryptjs';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -6,7 +5,7 @@ import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
 
 import IUsersRepository from '../repositories/IUsersRepository';
-import IHashProveider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
@@ -16,7 +15,7 @@ class CreateUserService {
     @inject('UsersRepository')
     private userRepository: IUsersRepository,
     @inject('HashProvider')
-    private hashProvider: IHashProveider,
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({
