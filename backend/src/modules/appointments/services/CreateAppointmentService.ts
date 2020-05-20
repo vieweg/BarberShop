@@ -1,16 +1,19 @@
-import { startOfHour, isBefore, isWithinInterval, getHours } from 'date-fns';
+import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 
 @injectable()
 class CreateAppointmentService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
+    @inject('NotificationsRepository')
+    private notificationsRepository: INotificationsRepository,
   ) {}
 
   public async execute({
@@ -35,7 +38,12 @@ class CreateAppointmentService {
       );
     }
 
-    if (await this.appointmentsRepository.findByDate(dateAppontment)) {
+    if (
+      await this.appointmentsRepository.findByDateAndProvider({
+        date: dateAppontment,
+        provider_id,
+      })
+    ) {
       throw new AppError('This schedule is already scheduled');
     }
 
@@ -43,6 +51,12 @@ class CreateAppointmentService {
       provider_id,
       user_id,
       date: dateAppontment,
+    });
+
+    const dateFormatted = format(dateAppontment, "dd/MM/yyyy 'às' HH:mm");
+    await this.notificationsRepository.create({
+      recipient_id: provider_id,
+      content: `Você possui um novo agendamento para dia ${dateFormatted}`,
     });
 
     return appointment;

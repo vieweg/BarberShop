@@ -6,7 +6,6 @@ import sessionRoutes from '@modules/users/infra/http/routes/session.routes';
 import passwordRoutes from '@modules/users/infra/http/routes/password.routes';
 import profileRoutes from '@modules/users/infra/http/routes/profile.routes';
 import providerRoutes from '@modules/appointments/infra/http/routes/provider.routes';
-
 import ensureAuthenticated from '@modules/users/infra/http/midlewares/ensureAuthenticated';
 
 const routes = Router();

@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import { getDaysInMonth, getDate, isAfter, isBefore } from 'date-fns';
+import { getDaysInMonth, getDate, isBefore, getHours } from 'date-fns';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -50,7 +50,7 @@ class ListProviderMonthAvailabilityService {
         day,
         available:
           appointmentsInDay.length < 10 &&
-          isBefore(currentDate, new Date(year, month - 1, day)),
+          isBefore(currentDate, new Date(year, month - 1, day, 17)),
       };
     });
 

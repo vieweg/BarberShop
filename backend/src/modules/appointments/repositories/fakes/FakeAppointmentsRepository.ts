@@ -33,6 +33,22 @@ export default class FakeAppointmentsRepository
     return findAppointment;
   }
 
+  public async findByDateAndProvider({
+    date,
+    provider_id,
+  }: {
+    date: Date;
+    provider_id: string;
+  }): Promise<Appointment | undefined> {
+    const findAppointment = this.appointments.find(
+      appointment =>
+        isEqual(appointment.date, date) &&
+        appointment.provider_id === provider_id,
+    );
+
+    return findAppointment;
+  }
+
   public async findById(id: string | number): Promise<Appointment | undefined> {
     const findAppointment = this.appointments.find(
       appointment => appointment.id === id,

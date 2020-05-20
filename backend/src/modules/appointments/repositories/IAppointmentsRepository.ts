@@ -8,6 +8,10 @@ export default interface IAppointmentsRepository {
   findAll(): Promise<Appointment[]>;
   findById(id: string | number): Promise<Appointment | undefined>;
   findByDate(date: Date): Promise<Appointment | undefined>;
+  findByDateAndProvider(data: {
+    date: Date;
+    provider_id: string;
+  }): Promise<Appointment | undefined>;
   findAllMonthProvider(data: IFindAllMonthProviderDTO): Promise<Appointment[]>;
   findAllDayProvider(data: IFindAllDayProviderDTO): Promise<Appointment[]>;
   delete(appointment: Appointment): Promise<void>;
