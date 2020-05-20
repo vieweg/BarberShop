@@ -45,10 +45,10 @@
 **RN**
 
 - Cada agendamento deve durar exatamente 1h;
-- Os agendamentos devem estar disponiveis entre 8hrs às 18hrs(primeiro as 8hrs e último as 17hrs.);
 - O usuário não pode agendar em um horário ja ocupado;
 - O Usuário não pode agendar em horário que já passou;
 - O Usuario não pode agendar um horário consigo mesmo;
+- Os agendamentos devem estar disponiveis entre 8hrs às 18hrs(primeiro as 8hrs e último as 17hrs.);
 
 # Painel do prestador
 
