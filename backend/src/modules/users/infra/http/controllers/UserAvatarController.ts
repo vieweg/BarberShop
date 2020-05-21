@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import UpdateAvatarUserService from '@modules/users/services/UpdateAvatarUserService';
+import { classToClass } from 'class-transformer';
 
 export default class UsersController {
   //public async index(req: Request, res: Response): Promise<Response> {}
@@ -17,8 +18,7 @@ export default class UsersController {
       fileName: req.file.filename,
     });
 
-    delete user.password;
-    return res.json(user);
+    return res.json({ user: classToClass(user) });
   }
 
   //public async delete(req: Request, res: Response): Promise<Response> {}

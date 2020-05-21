@@ -1,4 +1,4 @@
-import Router from 'express';
+import { Router } from 'express';
 
 import appointmentsRoutes from '@modules/appointments/infra/http/routes/appointments.routes';
 import userRoutes from '@modules/users/infra/http/routes/users.routes';
