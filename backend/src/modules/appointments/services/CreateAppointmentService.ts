@@ -6,6 +6,7 @@ import Appointment from '@modules/appointments/infra/typeorm/entities/Appointmen
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import ICacheProvider from '@shared/containers/providers/CacheProvider/models/ICacheProvider';
 
 @injectable()
 class CreateAppointmentService {
@@ -14,6 +15,8 @@ class CreateAppointmentService {
     private appointmentsRepository: IAppointmentsRepository,
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationsRepository,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -22,6 +25,10 @@ class CreateAppointmentService {
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const dateAppontment = startOfHour(date);
+    const cacheKey = `provider-appointments:${provider_id}:${format(
+      dateAppontment,
+      'yyyy-M-d',
+    )}`;
     const currentDate = Date.now();
 
     if (provider_id === user_id) {
@@ -58,6 +65,8 @@ class CreateAppointmentService {
       recipient_id: provider_id,
       content: `Você possui um novo agendamento para dia ${dateFormatted}`,
     });
+
+    await this.cacheProvider.invalidate(cacheKey);
 
     return appointment;
   }

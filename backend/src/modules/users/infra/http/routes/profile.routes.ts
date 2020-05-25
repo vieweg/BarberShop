@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
-import uploadConfig from '@config/upload';
+import storageConfig from '@config/storage';
 
 import { celebrate, Joi, Segments } from 'celebrate';
 
@@ -11,7 +11,7 @@ const userProfileController = new UserProfileController();
 const userAvatarController = new UserAvatarController();
 
 const profileRoutes = Router();
-const uploader = multer(uploadConfig);
+const uploader = multer(storageConfig.multer);
 
 profileRoutes.get('/', userProfileController.show);
 

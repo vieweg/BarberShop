@@ -1,13 +1,20 @@
 import UserRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeCacheProvider from '@shared/containers/providers/CacheProvider/fakes/FakeCacheProvider';
 import ListProvidersService from './ListProvidersService';
 
 let userRepository: UserRepository;
 let listProvidersService: ListProvidersService;
+let cacheProvider: FakeCacheProvider;
 
 describe('List providers', () => {
   beforeEach(() => {
     userRepository = new UserRepository();
-    listProvidersService = new ListProvidersService(userRepository);
+    cacheProvider = new FakeCacheProvider();
+
+    listProvidersService = new ListProvidersService(
+      userRepository,
+      cacheProvider,
+    );
   });
   it('Should be able to list all providers, except current user', async () => {
     const loggedUser = await userRepository.create({
