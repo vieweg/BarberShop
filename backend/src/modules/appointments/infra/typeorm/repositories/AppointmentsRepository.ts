@@ -40,6 +40,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
   }): Promise<Appointment | undefined> {
     const appointment = await this.repository.findOne({
       where: { date, provider_id },
+      order: { date: 'ASC' },
     });
 
     return appointment;
@@ -94,6 +95,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
         ),
       },
       relations: ['user'],
+      order: { date: 'ASC' },
     });
 
     return appointments;

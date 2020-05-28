@@ -9,6 +9,7 @@ import IHashProvider from '@modules/users/providers/HashProvider/models/IHashPro
 import ICacheProvider from '@shared/containers/providers/CacheProvider/models/ICacheProvider';
 
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
+import { classToClass } from 'class-transformer';
 
 @injectable()
 class CreateUserService {
@@ -43,7 +44,7 @@ class CreateUserService {
 
     await this.cacheProvider.invalidatePrefix('providers-list');
 
-    return user;
+    return classToClass(user);
   }
 }
 

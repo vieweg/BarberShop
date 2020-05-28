@@ -3,8 +3,6 @@ import { container } from 'tsyringe';
 
 import AuthenticateService from '@modules/users/services/AuthenticateService';
 
-import { classToClass } from 'class-transformer';
-
 export default class UsersController {
   //public async index(req: Request, res: Response): Promise<Response> {}
 
@@ -19,7 +17,7 @@ export default class UsersController {
       password,
     });
 
-    return res.json({ user: classToClass(user), token });
+    return res.json({ user, token });
   }
 
   //public async update(req: Request, res: Response): Promise<Response> {}

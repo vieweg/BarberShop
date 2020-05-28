@@ -1,6 +1,7 @@
 import UserRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeCacheProvider from '@shared/containers/providers/CacheProvider/fakes/FakeCacheProvider';
 import ListProvidersService from './ListProvidersService';
+import { classToClass } from 'class-transformer';
 
 let userRepository: UserRepository;
 let listProvidersService: ListProvidersService;
@@ -39,6 +40,6 @@ describe('List providers', () => {
       idUser: loggedUser.id,
     });
 
-    expect(providers).toEqual([user2, user3]);
+    expect(providers).toEqual([classToClass(user2), classToClass(user3)]);
   });
 });

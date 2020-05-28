@@ -46,14 +46,4 @@ describe('CreateUser', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
-
-  it('Should be able encript the password for user', async () => {
-    const user = await createUserService.execute({
-      name: 'Jonh Doe',
-      email: 'jonhdoe@example.com',
-      password: '123456',
-    });
-
-    expect(await hashProvider.compareHash('123456', user.password)).toBe(true);
-  });
 });

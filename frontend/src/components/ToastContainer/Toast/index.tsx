@@ -20,13 +20,13 @@ const icon = {
   error: <FiAlertCircle size={24} />,
 };
 
-const Toast: React.FC<ToastProps> = ({ message, style }) => {
+const Toast: React.FC<ToastProps> = ({ message, style }: ToastProps) => {
   const { removeToast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       removeToast(message.id);
-    }, 3000);
+    }, 4000);
 
     return () => {
       clearTimeout(timer);
@@ -37,7 +37,7 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
     <Container
       type={message.type}
       style={style}
-      hasDescription={!!message.description}
+      has_description={Number(!!message.description)}
     >
       {icon[message.type || 'info']}
       <div>

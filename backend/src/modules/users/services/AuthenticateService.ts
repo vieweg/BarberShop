@@ -7,6 +7,7 @@ import authConfig from '@config/auth';
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IHashProveider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import { classToClass } from 'class-transformer';
 
 interface IRequest {
   email: string;
@@ -47,7 +48,7 @@ class AuthenticateService {
     });
 
     return {
-      user,
+      user: classToClass(user),
       token,
     };
   }

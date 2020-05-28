@@ -15,11 +15,12 @@ import '@shared/infra/typeorm';
 import '@shared/containers';
 
 const app = express();
-app.use(rateLImiter);
 app.use(cors());
-
 app.use(express.json());
+
 app.use('/files', express.static(storageConfig.uploadsFolder));
+
+app.use(rateLImiter);
 app.use(routes);
 
 app.use(errors());

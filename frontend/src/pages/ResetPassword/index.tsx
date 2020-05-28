@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { FiArrowLeft, FiMail, FiUser, FiLock } from 'react-icons/fi';
+import { FiArrowLeft, FiLock } from 'react-icons/fi';
 import getValidateErrors from '../../utils/getValidateErrors';
 
 import { Container, AnimatedContent, Content, Background } from './style';
@@ -18,16 +18,16 @@ import Input from '../../components/Input';
 import logoImage from '../../assets/logo.svg';
 
 interface HandleSubmitProps {
-  name: string;
-  email: string;
   password: string;
+  password_confirmation: string;
 }
 
-const SingUp: React.FC = () => {
+const ResetPassword: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [loading, setLoading] = useState(false);
   const { addToast } = useToast();
   const history = useHistory();
+  const params = new URLSearchParams(useLocation().search);
 
   const handleSubmit = useCallback(
     async (data: HandleSubmitProps) => {
@@ -35,22 +35,28 @@ const SingUp: React.FC = () => {
       setLoading(true);
       try {
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome é obrigatório'),
-          email: Yup.string()
-            .required('Email é obrigatório')
-            .email('Informe um email válido'),
           password: Yup.string().min(6, 'Minimo de 6 caracteres'),
+          password_confirmation: Yup.string().oneOf(
+            [Yup.ref('password'), null],
+            'Confirmação inválida',
+          ),
         });
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        const token = params.get('token');
+
+        await api.post('/password/reset', {
+          password: data.password,
+          password_confirmation: data.password_confirmation,
+          token,
+        });
+
         addToast({
           type: 'success',
-          title: 'Cadastro efetuado com sucesso',
-          description:
-            'Agora você ja pod usar suas credenciais para efetuar seu login.',
+          title: 'Senha Alterada com sucesso',
+          description: 'Você já pode proceder com seu login',
         });
         setLoading(false);
         history.push('/');
@@ -62,12 +68,12 @@ const SingUp: React.FC = () => {
         }
         addToast({
           type: 'error',
-          title: 'Erro ao efetuar o cadastro',
+          title: 'Erro ao redefinir a senha',
           description: 'Verifique os dados e tente novamente.',
         });
       }
     },
-    [addToast, history],
+    [addToast, history, params],
   );
 
   return (
@@ -78,22 +84,21 @@ const SingUp: React.FC = () => {
           <Content>
             <img src={logoImage} alt="" />
             <Form ref={formRef} onSubmit={handleSubmit}>
-              <h1>Faça seu Cadastro</h1>
-              <Input icon={FiUser} name="name" type="text" placeholder="Nome" />
-              <Input
-                icon={FiMail}
-                name="email"
-                type="text"
-                placeholder="E-mail"
-              />
+              <h1>Nova senha</h1>
               <Input
                 icon={FiLock}
                 name="password"
                 type="password"
-                placeholder="Senha"
+                placeholder="Nova senha"
+              />
+              <Input
+                icon={FiLock}
+                name="password_confirmation"
+                type="password"
+                placeholder="Confirme a senha"
               />
               <Button loading={loading} type="submit">
-                Cadastrar
+                Redefinir senha
               </Button>
             </Form>
             <Link to="/">
@@ -107,4 +112,4 @@ const SingUp: React.FC = () => {
   );
 };
 
-export default SingUp;
+export default ResetPassword;

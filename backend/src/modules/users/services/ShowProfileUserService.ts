@@ -4,6 +4,7 @@ import AppError from '@shared/errors/AppError';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import { classToClass } from 'class-transformer';
 
 interface IRequest {
   idUser: string;
@@ -23,7 +24,7 @@ class ShowProfileUserService {
       throw new AppError('Only authenticated users can view the profile', 401);
     }
 
-    return user;
+    return classToClass(user);
   }
 }
 

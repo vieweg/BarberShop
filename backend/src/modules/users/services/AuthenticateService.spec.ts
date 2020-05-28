@@ -39,7 +39,7 @@ describe('AuthenticateUser', () => {
     });
 
     expect(authenticatedCredentials).toHaveProperty('token');
-    expect(authenticatedCredentials.user).toBe(user);
+    expect(authenticatedCredentials.user).toStrictEqual(user);
   });
 
   it('Should not be able authenticate with a non existing user', async () => {

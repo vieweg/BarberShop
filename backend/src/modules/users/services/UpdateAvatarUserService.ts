@@ -5,6 +5,7 @@ import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IStorageProvider from '@shared/containers/providers/StorageProvider/models/IStorageProvider';
+import { classToClass } from 'class-transformer';
 
 interface IRequest {
   idUser: string;
@@ -37,7 +38,7 @@ class UpdateAvatarUserService {
     user.avatar = savedFile;
 
     await this.userRepository.save(user);
-    return user;
+    return classToClass(user);
   }
 }
 
